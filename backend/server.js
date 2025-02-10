@@ -6,10 +6,26 @@ const app = express();
 const docker = new Docker();
 const PORT = 4092;
 
+// Update CORS configuration to handle both development and production
+const allowedOrigins = [
+  'https://crash.airhosts.org',
+  'http://localhost:5173',
+  'http://localhost:4092'
+];
+
 app.set('trust proxy', true);
 app.use(cors({
-  origin: ['https://crash.airhosts.org', 'http://localhost:5173'],
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error('CORS policy violation'), false);
+    }
+    return callback(null, true);
+  },
   methods: ['GET', 'POST'],
+  credentials: true
 }));
 app.use(express.json());
 
