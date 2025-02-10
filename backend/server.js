@@ -15,7 +15,7 @@ const allowedOrigins = [
 
 app.set('trust proxy', true);
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
+  origin: process.env.NODE_ENV === 'production'
     ? 'https://crash.airhosts.org'
     : ['http://localhost:5173', 'http://localhost:4092'],
   methods: ['GET', 'POST'],
@@ -23,17 +23,14 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Define the only allowed container ID
+const ALLOWED_CONTAINER = "mc-mc-1";
+
 app.post("/api/restart", async (req, res) => {
-  const { container } = req.body;
-
-  if (!container) {
-    console.log("No container ID provided");
-    return res.status(400).json({ error: "Container ID is required" });
-  }
-
+  // We ignore any container provided in the request body
   try {
-    console.log(`Attempting to restart container: ${container}`);
-    const dockerContainer = docker.getContainer(container);
+    console.log(`Attempting to restart container: ${ALLOWED_CONTAINER}`);
+    const dockerContainer = docker.getContainer(ALLOWED_CONTAINER);
     await dockerContainer.restart();
     res.json({ message: "Container restarted successfully!" });
   } catch (error) {
