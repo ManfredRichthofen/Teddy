@@ -36,7 +36,7 @@ function App() {
       setStatus("Oops! Teddy knocked over the server again! Picking it up...");
       setCurrentQuote(teddyQuotes[Math.floor(Math.random() * teddyQuotes.length)]);
       
-      await api.post("/restart", { container: "mc-mc-1" });
+      await api.post("/api/restart", { container: "mc-mc-1" });
       
       const newCount = restartCount + 1;
       setRestartCount(newCount);
