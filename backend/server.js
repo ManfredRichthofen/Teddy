@@ -10,7 +10,6 @@ app.set('trust proxy', true);
 app.use(cors({
   origin: ['https://crash.airhosts.org', 'http://localhost:5173'],
   methods: ['GET', 'POST'],
-  credentials: true
 }));
 app.use(express.json());
 
