@@ -1,16 +1,24 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
+import dns from 'node:dns'
+
+dns.setDefaultResultOrder('verbatim')
 
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
   ],
+  preview: {
+    port: 5173,
+    strictPort: true,
+    host: true
+  },
   server: {
-    https: true, // if you want Vite's dev server to run on HTTPS
+    https: true,
     proxy: {
-      '/api': {  // Change to '/api' so all API calls are forwarded
+      '/api': {
         target: 'http://localhost:4092',
         changeOrigin: true,
         secure: false,

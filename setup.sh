@@ -31,6 +31,6 @@ pm2 save
 
 echo "Setup complete! The application is now running."
 echo "Frontend: http://localhost:5173"
-echo "Backend: http://localhost:5000"
+echo "Backend: http://localhost:4092"
 echo ""
 echo "Use 'pm2 logs' to view logs" 
