@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+// Static base URL (no dynamic switching)
 const api = axios.create({
   baseURL: 'http://localhost:4092'
 });
@@ -24,7 +25,7 @@ function App() {
 
   useEffect(() => {
     const savedCount = localStorage.getItem('teddyRestartCount');
-    if (savedCount) setRestartCount(parseInt(savedCount));
+    if (savedCount) setRestartCount(parseInt(savedCount, 10));
     const savedLastRestart = localStorage.getItem('teddyLastRestart');
     if (savedLastRestart) setLastRestart(new Date(savedLastRestart));
   }, []);
@@ -36,7 +37,8 @@ function App() {
       setStatus("Oops! Teddy knocked over the server again! Picking it up...");
       setCurrentQuote(teddyQuotes[Math.floor(Math.random() * teddyQuotes.length)]);
       
-      await api.post("/api/restart", { container: "mc-mc-1" });
+      // POST to /api/restart; no payload is needed since the backend always restarts "mc-mc-1"
+      await api.post("/api/restart");
       
       const newCount = restartCount + 1;
       setRestartCount(newCount);
