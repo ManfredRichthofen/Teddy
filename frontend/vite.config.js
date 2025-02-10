@@ -13,11 +13,13 @@ export default defineConfig({
   preview: {
     port: 5173,
     strictPort: true,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    allowedHosts: '.airhosts.org',
   },
   server: {
     https: true,
     host: '0.0.0.0',
+    allowedHosts: '.airhosts.org',
     proxy: {
       '/api': {
         target: 'http://localhost:4092',
