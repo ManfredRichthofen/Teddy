@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Static base URL (no dynamic switching)
 const api = axios.create({
-  baseURL: 'http://localhost:4092'
+  baseURL: 'https://crash.airhosts.org'
 });
 
 function App() {
