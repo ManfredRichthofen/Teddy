@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173" }));
 
-app.post("/restart", async (req, res) => {
+app.post("/api/restart", async (req, res) => {
   const { container } = req.body;
 
   if (!container) {
