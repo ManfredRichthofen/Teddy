@@ -17,7 +17,6 @@ export default defineConfig({
     allowedHosts: '.airhosts.org',
   },
   server: {
-    https: true,
     host: '0.0.0.0',
     allowedHosts: '.airhosts.org',
     proxy: {
