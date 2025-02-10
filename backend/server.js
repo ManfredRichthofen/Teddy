@@ -4,7 +4,7 @@ import Docker from "dockerode";
 
 const app = express();
 const docker = new Docker();
-const PORT = 4092;
+const PORT = process.env.PORT || 4092;
 
 // Update CORS configuration to handle both development and production
 const allowedOrigins = [
@@ -15,15 +15,9 @@ const allowedOrigins = [
 
 app.set('trust proxy', true);
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error('CORS policy violation'), false);
-    }
-    return callback(null, true);
-  },
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://crash.airhosts.org'
+    : ['http://localhost:5173', 'http://localhost:4092'],
   methods: ['GET', 'POST'],
   credentials: true
 }));
@@ -33,10 +27,12 @@ app.post("/api/restart", async (req, res) => {
   const { container } = req.body;
 
   if (!container) {
+    console.log("No container ID provided");
     return res.status(400).json({ error: "Container ID is required" });
   }
 
   try {
+    console.log(`Attempting to restart container: ${container}`);
     const dockerContainer = docker.getContainer(container);
     await dockerContainer.restart();
     res.json({ message: "Container restarted successfully!" });
@@ -44,6 +40,11 @@ app.post("/api/restart", async (req, res) => {
     console.error("Error restarting container:", error);
     res.status(500).json({ error: "Failed to restart container" });
   }
+});
+
+// Add a test endpoint to verify the server is running
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
