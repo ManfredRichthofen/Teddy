@@ -1,6 +1,9 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+
+const api = axios.create({
+  baseURL: 'http://localhost:4092'
+});
 
 function App() {
   const [status, setStatus] = useState("");
@@ -33,7 +36,7 @@ function App() {
       setStatus("Oops! Teddy knocked over the server again! Picking it up...");
       setCurrentQuote(teddyQuotes[Math.floor(Math.random() * teddyQuotes.length)]);
       
-      await axios.post("/api/restart", { container: "mc-mc-1" });
+      await api.post("/restart", { container: "mc-mc-1" });
       
       const newCount = restartCount + 1;
       setRestartCount(newCount);
