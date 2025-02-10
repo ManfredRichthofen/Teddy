@@ -9,7 +9,7 @@ const PORT = 4092;
 app.set('trust proxy', true);
 app.use(cors());
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "https://crash.airhosts.org/" }));
 
 app.post("/api/restart", async (req, res) => {
   const { container } = req.body;
