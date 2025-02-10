@@ -14,11 +14,11 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     host: '0.0.0.0',
-    allowedHosts: '.airhosts.org',
+    allowedHosts: 'crash.airhosts.org',
   },
   server: {
     host: '0.0.0.0',
-    allowedHosts: '.airhosts.org',
+    allowedHosts: 'crash.airhosts.org',
     proxy: {
       '/api': {
         target: 'http://localhost:4092',
