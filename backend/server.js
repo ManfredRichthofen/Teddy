@@ -7,9 +7,12 @@ const docker = new Docker();
 const PORT = 4092;
 
 app.set('trust proxy', true);
-app.use(cors());
+app.use(cors({
+  origin: ['https://crash.airhosts.org', 'http://localhost:5173'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
-app.use(cors({ origin: "https://crash.airhosts.org/" }));
 
 app.post("/api/restart", async (req, res) => {
   const { container } = req.body;
@@ -19,28 +22,12 @@ app.post("/api/restart", async (req, res) => {
   }
 
   try {
-    console.log(`Attempting to restart container: ${container}`);
     const dockerContainer = docker.getContainer(container);
-    
-    // Verify container exists
-    await dockerContainer.inspect();
-    
-    // Attempt restart
     await dockerContainer.restart();
-    console.log(`Successfully restarted container: ${container}`);
-    
     res.json({ message: "Container restarted successfully!" });
   } catch (error) {
-    console.error("Error restarting container:", error.message);
-    
-    if (error.statusCode === 404) {
-      return res.status(404).json({ error: "Container not found" });
-    }
-    
-    res.status(500).json({ 
-      error: "Failed to restart container",
-      details: error.message 
-    });
+    console.error("Error restarting container:", error);
+    res.status(500).json({ error: "Failed to restart container" });
   }
 });
 
